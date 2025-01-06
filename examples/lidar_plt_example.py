@@ -12,58 +12,9 @@ sys.path.append(project_root)
 
 from utils.pltUtils import LidarPlotter
 
-MODEL_XML = """
-<mujoco model="laser_scanner">
-    <asset>
-        <!-- 添加棋盘格纹理 -->
-        <texture type="2d" name="grid" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" 
-                width="512" height="512" mark="edge" markrgb="0.2 0.3 0.4"/>
-        <!-- 创建材质 -->
-        <material name="grid" texture="grid" texrepeat="8 8" reflectance="0.2" texuniform="true"/>
-    </asset>
-
-    <option gravity="0 0 0"/>
-    
-    <worldbody>
-        <!-- 四面墙 -->
-        <geom name="wall1" type="box" size="0.5 0.01 0.2" pos="0 0.5 0.2"/>  
-        <geom name="wall2" type="box" size="0.5 0.01 0.2" pos="0 -0.5 0.2"/>
-        <geom name="wall3" type="box" size="0.01 0.5 0.2" pos="0.5 0 0.2"/>
-        <geom name="wall4" type="box" size="0.01 0.5 0.2" pos="-0.5 0 0.2"/>
-        
-        <!-- 修改地板，添加材质 -->
-        <geom name="floor" type="plane" size="2 2 .01" material="grid"/>
-        
-        <!-- 小球和激光雷达 -->
-        <body name="sphere" pos="0 0 0.1">
-            <freejoint name="ball_joint"/>
-            <geom name="ball" type="sphere" size="0.025" rgba="1 0 0 1"/>
-            
-            <!-- 使用replicate创建36个rangefinder -->
-            <replicate count="36" euler="0 0 10">
-                <site name="rf" pos="0.02 0 0" zaxis="1 0 0"/>
-            </replicate>
-            
-        </body>
-    </worldbody>
-    
-    <actuator>
-        <motor joint="ball_joint" gear="1 0 0 0 0 0"/>
-        <motor joint="ball_joint" gear="0 1 0 0 0 0"/>
-        <motor joint="ball_joint" gear="0 0 1 0 0 0"/>
-        <motor joint="ball_joint" gear="0 0 0 1 0 0"/>
-        <motor joint="ball_joint" gear="0 0 0 0 1 0"/>
-        <motor joint="ball_joint" gear="0 0 0 0 0 1"/>
-    </actuator>
-    
-    <sensor>
-        <rangefinder site="rf"/>
-    </sensor>
-</mujoco>
-"""
-
 # 创建模型和数据
-model = mujoco.MjModel.from_xml_string(MODEL_XML)
+model_path = os.path.join(project_root, "model/lidar_example.xml")
+model = mujoco.MjModel.from_xml_path(model_path)
 data = mujoco.MjData(model)
 
 # 创建线程控制标志

@@ -3,6 +3,7 @@ import mujoco.viewer
 import numpy as np
 import os
 import sys
+import traceback
 
 # 将项目根目录添加到Python路径
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -23,42 +24,11 @@ main_logger = logger_manager.get_logger("main")
 sim_logger = logger_manager.get_logger("simulation")
 traj_logger = logger_manager.get_logger("trajectory")
 
-XML = """
-<mujoco>
-    <default>
-        <joint armature="1" damping="1" limited="true"/>
-        <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01"/>
-    </default>
-
-    <worldbody>
-        <!-- 添加光源 -->
-        <light name="top" pos="0 0 3" dir="0 0 -1" directional="true"/>
-        <light name="front" pos="3 0 2" dir="-1 0 -0.5"/>
-        
-        <!-- 地面 -->
-        <geom name="ground" type="plane" size="2 2 0.1" rgba="0.3 0.3 0.3 1"/>
-        
-        <!-- 小球 -->
-        <body name="ball" pos="0 0 1">
-            <joint name="ball_x" type="slide" axis="1 0 0" range="-2 2"/>
-            <joint name="ball_y" type="slide" axis="0 1 0" range="-2 2"/>
-            <joint name="ball_z" type="slide" axis="0 0 1" range="0.1 2"/>
-            <geom name="ball" type="sphere" size="0.05" rgba="1 0 0 1"/>
-        </body>
-    </worldbody>
-
-    <actuator>
-        <motor joint="ball_x" name="ax" gear="100"/>
-        <motor joint="ball_y" name="ay" gear="100"/>
-        <motor joint="ball_z" name="az" gear="100"/>
-    </actuator>
-</mujoco>
-"""
-
 try:
     # 创建模型
     main_logger.info("正在初始化MuJoCo模型...")
-    model = mujoco.MjModel.from_xml_string(XML)
+    model_path = os.path.join(project_root, "model/ball.xml")
+    model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
     main_logger.info("模型初始化成功")
 
@@ -140,7 +110,7 @@ try:
             viewer.sync()
 
 except Exception as e:
-    main_logger.error(f"程序运行出错: {str(e)}", exc_info=True)
+    main_logger.error(f"程序运行出错: {str(e)}")
     raise
 finally:
     main_logger.info("程序结束")

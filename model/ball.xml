@@ -1,0 +1,23 @@
+<mujoco>
+    <include file="scene.xml"/>
+    <default>
+        <joint armature="1" damping="1" limited="true"/>
+        <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01"/>
+    </default>
+
+    <worldbody>
+        <!-- 小球 -->
+        <body name="ball" pos="0 0 1">
+            <joint name="ball_x" type="slide" axis="1 0 0" range="-2 2"/>
+            <joint name="ball_y" type="slide" axis="0 1 0" range="-2 2"/>
+            <joint name="ball_z" type="slide" axis="0 0 1" range="0.1 2"/>
+            <geom name="ball" type="sphere" size="0.05" rgba="1 0 0 1"/>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <motor joint="ball_x" name="ax" gear="100"/>
+        <motor joint="ball_y" name="ay" gear="100"/>
+        <motor joint="ball_z" name="az" gear="100"/>
+    </actuator>
+</mujoco>

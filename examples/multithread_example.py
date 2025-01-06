@@ -26,38 +26,6 @@ main_logger = logger_manager.get_logger("main")
 sim_logger = logger_manager.get_logger("simulation")
 traj_logger = logger_manager.get_logger("trajectory")
 
-XML = """
-<mujoco>
-    <default>
-        <joint armature="1" damping="1" limited="true"/>
-        <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01"/>
-    </default>
-
-    <worldbody>
-        <!-- 添加光源 -->
-        <light name="top" pos="0 0 3" dir="0 0 -1" directional="true"/>
-        <light name="front" pos="3 0 2" dir="-1 0 -0.5"/>
-        
-        <!-- 地面 -->
-        <geom name="ground" type="plane" size="2 2 0.1" rgba="0.3 0.3 0.3 1"/>
-        
-        <!-- 小球 -->
-        <body name="ball" pos="0 0 1">
-            <joint name="ball_x" type="slide" axis="1 0 0" range="-2 2"/>
-            <joint name="ball_y" type="slide" axis="0 1 0" range="-2 2"/>
-            <joint name="ball_z" type="slide" axis="0 0 1" range="0.1 2"/>
-            <geom name="ball" type="sphere" size="0.05" rgba="1 0 0 1"/>
-        </body>
-    </worldbody>
-
-    <actuator>
-        <motor joint="ball_x" name="ax" gear="100"/>
-        <motor joint="ball_y" name="ay" gear="100"/>
-        <motor joint="ball_z" name="az" gear="100"/>
-    </actuator>
-</mujoco>
-"""
-
 
 class SimulationThread(threading.Thread):
     def __init__(self, model, data, center, radius, angular_speed, ball_id):
@@ -101,13 +69,13 @@ class SimulationThread(threading.Thread):
 
                 # 记录仿真状态
                 self._log_simulation_state()
-                #
+                
                 # 控制仿真频率
                 time.sleep(self.model.opt.timestep)
 
             except Exception as e:
                 sim_logger.error(
-                    f"仿真线程发生错误: {str(e)}\n{traceback.format_exc()}"
+                    f"仿真线程发生错误: {str(e)}\n"
                 )
                 break
 
@@ -128,7 +96,8 @@ class SimulationThread(threading.Thread):
 try:
     # 创建模型
     main_logger.info("正在初始化MuJoCo模型...")
-    model = mujoco.MjModel.from_xml_string(XML)
+    model_path = os.path.join(project_root, "model/1.xml")
+    model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
     main_logger.info("模型初始化成功")
 
@@ -182,6 +151,7 @@ try:
     sim_thread.start()
     main_logger.info("仿真线程已启动")
 
+    # 主循环，用于更新数据和渲染
     while viewer.is_alive:
         viewer.user_scn.ngeom = 0
 
@@ -200,7 +170,7 @@ try:
     viewer.close()
 
 except Exception as e:
-    error_msg = f"程序运行出错: {str(e)}\n{traceback.format_exc()}"
+    error_msg = f"程序运行出错: {str(e)}"
     main_logger.error(error_msg)
     if "sim_thread" in locals():
         sim_thread.stop()
