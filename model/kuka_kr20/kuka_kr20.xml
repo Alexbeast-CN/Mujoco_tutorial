@@ -1,0 +1,144 @@
+<mujoco model="kuka_kr20">
+    <include file="../scene.xml"/>
+    
+    <extension>
+      <plugin plugin="mujoco.elasticity.cable"/>
+    </extension>
+
+    <compiler angle="radian" boundmass="0.001" boundinertia="0.001" meshdir="." />
+    
+    <option integrator="implicitfast" timestep="0.001" solver="Newton" iterations="100"/>
+    
+    <default>
+        <default class="kuka">
+            <joint axis="0 0 1" />
+            <general gaintype="fixed" biastype="affine" gainprm="2000" biasprm="0 -2000 -200" />
+            <default class="visual">
+                <geom type="mesh" contype="0" conaffinity="0" group="1" />
+            </default>
+            <default class="collision">
+                <geom group="2" />
+            </default>
+        </default>
+    </default>
+    
+    <asset>
+        <material name="kuka_black" rgba="0.054901960784313725 0.054901960784313725 0.06274509803921569 1"/>
+        <material name="kuka_orange" rgba="0.9647058823529412 0.47058823529411764 0.1568627450980392 1"/>
+        <material name="silver" rgba="0.7 0.7 0.7 1"/>
+        
+        <mesh name="base_link" file="assets/base_link.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="Cable1_1" file="assets/Cable1_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="Cable2_1" file="assets/Cable2_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="Cable3_1" file="assets/Cable3_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="Cable4_1" file="assets/Cable4_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="link_1_1" file="assets/link_1_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="link_2_1" file="assets/link_2_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="link_3_1" file="assets/link_3_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="link_4_1" file="assets/link_4_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="link_5_1" file="assets/link_5_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="link_6_1" file="assets/link_6_1.stl" scale="0.001 0.001 0.001"/>
+    </asset>
+
+    <worldbody>
+        <body name="base_link" pos="0 0 0" >
+            <inertial pos="-0.02519167908195973 -0.0003512237430115979 0.14073533087089485" mass="2.7534689254296694" 
+                     diaginertia="4.167631 5.193899 5.744846" />
+            <geom type="mesh" name="base_link_mesh" mesh="base_link" material="kuka_black"/>
+            
+            <!-- Link 1 -->
+            <body name="link_1_1" pos="0 0 0.274469" >
+                <inertial pos="0.04262669771195508 0.022539294966451077 0.16742328594359268" mass="1.95025233840842"
+                         diaginertia="3.903396 4.254089 4.101512" />
+                <joint name="joint_1" axis="0 0 1" limited="true" range="-3.2288591161895095 3.2288591161895095"/>
+                <geom type="mesh" name="link_1_1_mesh" pos="0 0 -0.274469" mesh="link_1_1" material="kuka_orange"/>
+
+                <!-- Link 2 -->
+                <body name="link_2_1" pos="0.16 -0.0948 0.245531" >
+                    <inertial pos="-0.006708726638690016 -0.08230603603988629 0.35023181950025006" mass=".8242519331073362"
+                             diaginertia="4.984932 5.021308 0.256664" />
+                    <joint name="joint_2" axis="0 -1 0" limited="true" range="-3.2288591161895095 1.1344640137963142"/>
+                    <geom type="mesh" name="link_2_1_mesh" pos="-0.16 0.0948 -0.52" mesh="link_2_1" material="kuka_orange"/>
+
+                    <!-- Link 3 -->
+                    <body name="link_3_1" pos="0 -0.0203 0.78" >
+                        <inertial pos="0.03856241201011176 0.11370205937926676 0.07616220977557053" mass="1.1562183723958658"
+                                 diaginertia="1.475083 2.199261 2.25828" />
+                        <joint name="joint_3" axis="0 1 0" limited="true" range="-2.4085543677521746 3.0543261909900763"/>
+                        <geom type="mesh" name="link_3_1_mesh" pos="-0.16 0.1151 -1.3" mesh="link_3_1" material="kuka_orange"/>
+
+                        <!-- Link 4 -->
+                        <body name="link_4_1" pos="0.3 0.1151 0.15" >
+                            <inertial pos="0.2794641231700052 0.005705547665961539 -1.1441231588804612e-06" mass=".47719118331815324"
+                                     diaginertia="0.089286 1.63285 1.644056" />
+                            <joint name="joint_4" axis="1 0 0" limited="true" range="-6.108652381980153 6.108652381980153"/>
+                            <geom type="mesh" name="link_4_1_mesh" pos="-0.46 0 -1.45" mesh="link_4_1" material="kuka_orange"/>
+
+                            <!-- Link 5 -->
+                            <body name="link_5_1" pos="0.56 0.0923 0" >
+                                <inertial pos="0.05739426005238135 -0.10605062717888086 -4.807006906970557e-06" mass=".10353274319603718"
+                                         diaginertia="0.043336 0.032453 0.064603" />
+                                <joint name="joint_5" axis="0 1 0" limited="true" range="-2.2689280275926285 2.2689280275926285"/>
+                                <geom type="mesh" name="link_5_1_mesh" pos="-1.02 -0.0923 -1.45" mesh="link_5_1" material="kuka_orange"/>
+
+                                <!-- Link 6 -->
+                                <body name="link_6_1" pos="0.139 -0.0923 0" >
+                                    <inertial pos="0.008129076502710442 -2.0340839963698945e-14 8.253251104872739e-05" mass="0.0020169644458108382"
+                                             diaginertia="0.000104 5.5e-05 5.4e-05" />
+                                    <joint name="joint_6" axis="1 0 0" limited="true" range="-6.108652381980153 6.108652381980153"/>
+                                    <geom type="mesh" name="link_6_1_mesh" pos="-1.159 0 -1.45" mesh="link_6_1" material="silver"/>
+                                    <!-- <composite prefix="cable_" type="cable" curve="s" size="1.5" count="51"  offset="0.0 0 0.1" initial="none">
+                                        <plugin plugin="mujoco.elasticity.cable">
+                                        <config key="twist" value="1e7"/>
+                                        <config key="bend" value="4e7"/>
+                                        <config key="vmax" value="0.05"/>
+                                        <config key="flat" value="true"/>
+                                        </plugin>
+                                        <joint kind="main" damping="1.5"/>
+                                        <geom type="capsule" rgba="0.2 0.8 0.3 1" size=".01" condim="1"/>
+                                    </composite> -->
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+    <body name="cable_end" pos="2.644 0. 1.55" mocap="true">
+      <inertial pos="0 0 0" quat="0 0 0 1" mass="0.1" diaginertia="0.1 0.1 0.1" />
+      <geom size=".01"/>
+    </body>
+    </worldbody>
+
+    <equality>
+        <!-- 将 cable_end 与 cable_B_last 通过焊接约束，且设置很强的阻尼和阻尼比，防止脱落 -->
+        <!-- <weld name="right_boundary" body1="cable_B_last" body2="cable_end" anchor="0 0 0" 
+            solimp="0.95 0.99 0.0001" solref="0.0001 1"/> -->
+    </equality>
+
+    <actuator>
+        <position name="actuator1" joint="joint_1" kp="5000" kv="200" gear="100" 
+            ctrlrange="-322.88591161895095 322.88591161895095" />
+        <position name="actuator2" joint="joint_2" kp="5000" kv="200" gear="100" 
+            ctrlrange="-322.88591161895095 113.44640137963142" />
+        <position name="actuator3" joint="joint_3" kp="5000" kv="200" gear="100" 
+            ctrlrange="-240.85543677521746 305.43261909900763" />
+        <position name="actuator4" joint="joint_4" kp="5000" kv="200" gear="100" 
+            ctrlrange="-610.8652381980153 610.8652381980153" />
+        <position name="actuator5" joint="joint_5" kp="5000" kv="200" gear="100" 
+            ctrlrange="-226.89280275926285 226.89280275926285" />
+        <position name="actuator6" joint="joint_6" kp="5000" kv="200" gear="100" 
+            ctrlrange="-610.8652381980153 610.8652381980153" />
+    </actuator>
+
+    <contact>
+        <exclude body1="base_link" body2="link_1_1" />
+        <exclude body1="link_1_1" body2="link_2_1" />
+        <exclude body1="link_2_1" body2="link_3_1" />
+        <exclude body1="link_3_1" body2="link_4_1" />
+        <exclude body1="link_4_1" body2="link_5_1" />
+        <exclude body1="link_5_1" body2="link_6_1" />
+    </contact>
+
+</mujoco>
