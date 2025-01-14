@@ -4,6 +4,8 @@
 
 本文将以 igus 提供的工业机械臂管线包方案为例，创建基于 Mujoco 的机械臂带线缆运动仿真方案
 
+[![igus_triflex.mp4](https://assets.pbn.com/2022/09/IGUS-1.jpg)](https://www.youtube.com/watch?v=-emxk3wkfH0)
+
 <video width="100%" controls>
   <source src="media/igus_triflex.mp4" type="video/mp4">
 </video>
@@ -13,6 +15,8 @@
 <video width="100%" controls>
   <source src="media/kuka_igus_sim.mp4" type="video/mp4">
 </video>
+
+https://github.com/user-attachments/assets/c3cca07c-6bf7-4d51-b258-3e1a667b2412
 
 完整示例请参考 [Github/Mujoco_tutorial](https://github.com/Alexbeast-CN/Mujoco_tutorial/blob/main/examples/kr20_cable_example.py)
 
@@ -29,6 +33,10 @@
 <video width="100%" controls>
   <source src="media/dynamic_illustration.mp4" type="video/mp4">
 </video>
+
+
+https://github.com/user-attachments/assets/252f5624-5b1a-49ea-b9eb-4b44479a53f1
+
 
 当机械臂附带线缆运动的时候，线缆会将整个机器人组成一个并联结构，增加仿真中动力学运算的复杂性，导致参数非常难调，且非常容易仿真的失效。所以在机器人进行线缆仿真的时候我不推荐使用 `actuator` ，而是使用完全不考虑动力学的关节位置式控制，因此我们需要删除模型中所有的 `actuator` tag，直接通过 `data.qpos`， `data.qvel`, `data.qacc` 来改变机械臂关节的位置。虽然这个方法 Mujoco 官方不推荐，但是它非常接近目前工业界中非力控机械臂运动规划的思路。
 
@@ -142,6 +150,10 @@ listener.stop()
 <video width="100%" controls>
   <source src="media/positional_control.mp4" type="video/mp4">
 </video>
+
+
+https://github.com/user-attachments/assets/2b28f03e-4609-4fe2-89e5-10c0945e6cea
+
 
 ## 2. 添加线缆
 
