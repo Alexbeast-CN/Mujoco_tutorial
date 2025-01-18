@@ -23,8 +23,8 @@ logger = logger_manager.get_logger("main")
 
 # 初始化 MuJoCo 环境
 logger.info("正在初始化 MuJoCo 环境...")
-# model = mujoco.MjModel.from_xml_path("model/KR_20_R1810-2_V00/KR_20_R1810-2_V00.xml")
 model = mujoco.MjModel.from_xml_path("model/kuka_kr20/kuka_kr20.xml")
+# model = mujoco.MjModel.from_xml_path("model/kuka_kr20/kuka_kr20_cable.xml")
 data = mujoco.MjData(model)
 mujoco.mj_forward(model, data)
 logger.info("MuJoCo 环境初始化完成")

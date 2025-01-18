@@ -33,6 +33,7 @@ logs/
 log/
 mjDoc/
 recordings/
+MUJOCO_LOG.TXT
 
 # IDE
 .idea/
