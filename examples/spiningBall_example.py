@@ -7,7 +7,7 @@ import traceback
 
 # 将项目根目录添加到Python路径
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.append(project_root)
+sys.path.insert(0, project_root)
 from utils.logUtils import setup_logger
 from utils.vizUtils import TrajectoryDrawer
 
